@@ -30,36 +30,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Define your CRUD routes here
-router.get('/new', async (req, res) => {
-  try{
-    res.render('new');
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
-  }
-});
-
-router.post('/create', async (req, res) => {
-  try {
-    const body = req.body;
-    body.price = parseFloat(body.price);
-    console.log(body);
-    const response = await axios.post(`${BASE_URL}/B4aVehicle`, body, {
-      headers: {
-        'X-Parse-Application-Id': APP_ID,
-        'X-Parse-REST-API-Key': API_KEY,
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    res.redirect('/api/');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Erro ao criar carro');
-  }
-});
-
 router.get('/:id', async (req, res) => {
   const id = req.params.id;
   try {
@@ -77,6 +47,72 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Define your CRUD routes here
+router.get('/new', async (req, res) => {
+  try {
+    res.render('new');
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+// Define your CRUD routes here
+router.get('/edit/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const response = await axios.get(`${BASE_URL}/B4aVehicle/${id}`, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY
+      }
+    });
+    const carro = response.data;
+    res.render('edit', { carro });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+router.post('/create', async (req, res) => {
+  try {
+    const body = req.body;
+    body.price = parseFloat(body.price);
+    const response = await axios.post(`${BASE_URL}/B4aVehicle`, body, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    res.redirect('/api/');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Erro ao criar carro');
+  }
+});
+
+router.post('/update/:id', async (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  body.price = parseFloat(body.price);
+  try {
+    const response = await axios.put(`${BASE_URL}/B4aVehicle/${id}`, body, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY,
+        'Content-Type': 'application/json'
+      }
+    });
+    res.redirect(`/api/${id}/`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Erro ao atualizar');
+  }
+});
+
 router.post('/delete', async (req, res) => {
   try {
     const response = await axios.delete(`${BASE_URL}/B4aVehicle/${req.body.id}`, {
@@ -88,7 +124,7 @@ router.post('/delete', async (req, res) => {
     res.redirect('/api/');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error deleting item');
+    res.status(500).send('Erro ao excluir');
   }
 });
 

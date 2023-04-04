@@ -30,7 +30,7 @@
   </head>
   <body>
     <h1>Meus carros</h1>
-    <h2> <a href='/api/new'>Criar um carro</a></h2>
+    <h2> <a href='/api/new/'>Criar um carro</a></h2>
     <table>
       <thead>
         <tr>
@@ -52,7 +52,7 @@
               <div style='margin-bottom: 10px'>
                 <a href="/api/<%=carro.objectId %>">Mostrar</a>
               </div>
-              <form method="POST" action="/api/delete" enctype="application/x-www-form-urlencoded">
+              <form method="POST" action="/api/delete/" enctype="application/x-www-form-urlencoded">
                 <input type="hidden" name="id" value="<%=carro.objectId%>">
                 <button type="submit">Excluir</button>
               </form>

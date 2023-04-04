@@ -14,12 +14,10 @@
     {
       "src": "/(.*)",
       "dest": "/"
-    }
-  ],
-  "rewrites": [
+    },
     {
-      "source": "/views/:path*",
-      "destination": "/views/:path*"
-    }
+      "src": "/views/(.*)",
+      "dest": "/views/$1"
+    },
   ]
 }

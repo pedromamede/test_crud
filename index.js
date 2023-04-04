@@ -1,6 +1,7 @@
 // server.js
 const express = require('express');
 const apiRouter = require('./api');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 80;
@@ -12,6 +13,7 @@ app.use(express.static('public'));
 app.use('/api', apiRouter);
 
 app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // Start your server and listen for incoming requests
 app.listen(port, () => {

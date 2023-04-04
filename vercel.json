@@ -5,5 +5,33 @@
       "src": "index.js",
       "use": "@vercel/node"
     }
+  ],
+  "routes": [
+    {
+      "src": "/api/new",
+      "dest": "/api/new"
+    },
+    {
+      "src": "/api/create",
+      "methods": ["POST"],
+      "dest": "/api/create"
+    },
+    {
+      "src": "/api/:id",
+      "dest": "/api/:id"
+    },
+    {
+      "src": "/api/delete",
+      "methods": ["POST"],
+      "dest": "/api/delete"
+    },
+    {
+      "src": "/api",
+      "dest": "/api"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
   ]
 }

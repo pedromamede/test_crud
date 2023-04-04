@@ -16,5 +16,10 @@
       "dest": "/"
     }
   ],
-  "public": "views"
+  "rewrites": [
+    {
+      "source": "/views/:path*",
+      "destination": "/views/:path*"
+    }
+  ]
 }

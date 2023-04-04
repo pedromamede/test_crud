@@ -22,7 +22,6 @@ router.get('/', async (req, res) => {
         'X-Parse-REST-API-Key': API_KEY
       }
     });
-    // res.json(response.data.results);
     res.render('index', { carros: response.data.results });
   } catch (error) {
     console.error(error);
@@ -30,24 +29,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
-  const id = req.params.id;
-  try {
-    const response = await axios.get(`${BASE_URL}/B4aVehicle/${id}`, {
-      headers: {
-        'X-Parse-Application-Id': APP_ID,
-        'X-Parse-REST-API-Key': API_KEY
-      }
-    });
-    const carro = response.data;
-    res.render('show', { carro });
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(500);
-  }
-});
-
-// Define your CRUD routes here
 router.get('/new', async (req, res) => {
   try {
     res.render('new');
@@ -57,7 +38,6 @@ router.get('/new', async (req, res) => {
   }
 });
 
-// Define your CRUD routes here
 router.get('/edit/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -125,6 +105,23 @@ router.post('/delete', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Erro ao excluir');
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const response = await axios.get(`${BASE_URL}/B4aVehicle/${id}`, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY
+      }
+    });
+    const carro = response.data;
+    res.render('show', { carro });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
   }
 });
 

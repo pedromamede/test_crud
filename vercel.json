@@ -33,5 +33,6 @@
       "src": "/(.*)",
       "dest": "/"
     }
-  ]
+  ],
+  "trailingSlash": true
 }

@@ -53,7 +53,7 @@ router.post('/create', async (req, res) => {
       }
     });
     
-    res.redirect('/api');
+    res.redirect('/api/');
   } catch (error) {
     console.error(error);
     res.status(500).send('Erro ao criar carro');
@@ -85,7 +85,7 @@ router.post('/delete', async (req, res) => {
         'X-Parse-REST-API-Key': API_KEY
       }
     });
-    res.redirect('/api');
+    res.redirect('/api/');
   } catch (error) {
     console.error(error);
     res.status(500).send('Error deleting item');

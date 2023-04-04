@@ -1,32 +1,95 @@
 // api.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const axios = require('axios'); // Install axios using npm install axios
+
 
 const router = express.Router();
 router.use(bodyParser.json());
 
-router.get('/', (req, res) => {
-  res.sendStatus(200);
+router.use(bodyParser.urlencoded({ extended: true }))
+
+const APP_ID = process.env['APP_ID']; // Replace with your Back4App app ID
+const API_KEY = process.env['API_KEY']; // Replace with your Back4App REST API key
+const BASE_URL = `https://parseapi.back4app.com/classes`;
+
+// Define your CRUD routes here
+router.get('/', async (req, res) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/B4aVehicle`, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY
+      }
+    });
+    // res.json(response.data.results);
+    res.render('index', { carros: response.data.results });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
 });
 
-router.get('/items', (req, res) => {
-  // Retrieve items from your existing endpoint and return them as JSON
-  res.json(items);
+// Define your CRUD routes here
+router.get('/new', async (req, res) => {
+  try{
+    res.render('new');
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
 });
 
-router.post('/items', (req, res) => {
-  // Create a new item using data from the request body and post it to your existing endpoint
-  res.sendStatus(201);
+router.post('/create', async (req, res) => {
+  try {
+    const body = req.body;
+    body.price = parseFloat(body.price);
+    console.log(body);
+    const response = await axios.post(`${BASE_URL}/B4aVehicle`, body, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    res.redirect('/api');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Erro ao criar carro');
+  }
 });
 
-router.put('/items/:id', (req, res) => {
-  // Update an existing item using data from the request body and put it to your existing endpoint
-  res.sendStatus(204);
+router.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const response = await axios.get(`${BASE_URL}/B4aVehicle/${id}`, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY
+      }
+    });
+    const carro = response.data;
+    res.render('show', { carro });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
 });
 
-router.delete('/items/:id', (req, res) => {
-  // Delete an existing item from your existing endpoint
-  res.sendStatus(204);
+router.post('/delete', async (req, res) => {
+  try {
+    const response = await axios.delete(`${BASE_URL}/B4aVehicle/${req.body.id}`, {
+      headers: {
+        'X-Parse-Application-Id': APP_ID,
+        'X-Parse-REST-API-Key': API_KEY
+      }
+    });
+    res.redirect('/api');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting item');
+  }
 });
 
 module.exports = router;

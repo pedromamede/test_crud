@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ADS - Nuvem</title>
+    <style>
+      table {
+
+        width: 100%;
+      }
+      
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+      
+      th {
+        background-color: #ddd;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      
+      tr:hover {
+        background-color: #ddd;
+      }
+    </style>
+        
+    
+  </head>
+  <body>
+    <h1>Meus carros</h1>
+    <h2> <a href='/api/new'>Criar um carro</a></h2>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Preco</th>
+          <th>Cor</th>
+          <th>Acoes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% carros.forEach(carro => { %>
+          <tr>
+            <td><%= carro.objectId %></td>
+            <td><%= carro.name %></td>
+            <td><%= carro.price %></td>
+            <td><%= carro.color %></td>
+            <td>
+              <div style='margin-bottom: 10px'>
+                <a href="/api/<%=carro.objectId %>">Mostrar</a>
+              </div>
+              <form method="POST" action="/api/delete" enctype="application/x-www-form-urlencoded">
+                <input type="hidden" name="id" value="<%=carro.objectId%>">
+                <button type="submit">Excluir</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <script>
+    <script>
+  // Listen for click events on links with the "data-method" attribute
+  document.addEventListener("click", function(event) {
+    var element = event.target;
+    if (element.matches("[data-method]")) {
+      event.preventDefault();
+      var method = element.getAttribute("data-method").toUpperCase();
+      var url = element.getAttribute("href");
+      if (method === "DELETE") {
+        if (confirm(element.getAttribute("data-confirm"))) {
+          axios.delete(url)
+            .then(function(response) {
+              window.location.reload();
+            })
+            .catch(function(error) {
+              console.error(error);
+            });
+        }
+      }
+    }
+  });
+</script>
+  </script>
+  </body>
+</html>
